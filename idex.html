@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pointage Hafid Square Pro</title>
+    <style>
+        body {
+            background-color: #0b0e14;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            margin: 0;
+        }
+
+        .header-box {
+            background: linear-gradient(145deg, #2a2d35, #12141a);
+            padding: 15px;
+            border-radius: 0px; /* مربعات 100% */
+            width: 95%;
+            max-width: 400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            box-shadow: 4px 4px 10px #050505;
+        }
+
+        .header-box h2 { 
+            margin: 0; font-size: 1.1rem; 
+            color: #ffffff; text-transform: uppercase;
+        }
+
+        .table-container {
+            width: 95%;
+            max-width: 400px;
+        }
+
+        .labels-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .label { 
+            font-size: 0.7rem; color: #8e949e; font-weight: bold;
+        }
+
+        .data-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
+            gap: 5px; /* فوارق صغيرة بين المربعات */
+            margin-bottom: 8px;
+        }
+
+        /* مربعات قاصحة */
+        input {
+            background: linear-gradient(145deg, #1e2127, #16191e);
+            border: 1px solid #333;
+            border-radius: 0px; /* زوايا مربعة */
+            color: #ffffff;
+            padding: 12px 2px;
+            font-size: 0.8rem;
+            text-align: center;
+            outline: none;
+            box-shadow: inset 2px 2px 5px #0a0c10;
+        }
+
+        input:focus {
+            border-color: #ffffff;
+        }
+
+        .btn-pdf { 
+            background: linear-gradient(145deg, #ffffff, #a0a0a0);
+            border-radius: 0px; /* زر مربع */
+            padding: 8px 15px; 
+            border: none; 
+            color: #000; 
+            font-size: 0.7rem; 
+            font-weight: bold; 
+            cursor: pointer;
+        }
+
+        .footer-name {
+            margin-top: 30px; font-size: 0.6rem; color: #444;
+            letter-spacing: 3px; text-align: right; width: 95%;
+        }
+
+        @media print {
+            .btn-pdf { display: none; }
+            body { background: white; color: black; }
+            input { border: 1px solid #000; background: white; color: black; border-radius: 0px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-box">
+        <h2>POINTAGE <span>HAFID</span></h2>
+        <button class="btn-pdf" onclick="window.print()">PDF REPORT</button>
+    </div>
+
+    <div class="table-container">
+        <div class="labels-row">
+            <div class="label">DATE</div>
+            <div class="label">STATUS</div>
+            <div class="label">IN</div>
+            <div class="label">OUT</div>
+        </div>
+        <div id="tableBody"></div>
+    </div>
+
+    <div class="footer-name">HFID SAJIDI</div>
+
+    <script>
+        function addRow(data = ["", "", "", ""]) {
+            const container = document.getElementById('tableBody');
+            const row = document.createElement('div');
+            row.className = 'data-row';
+            row.innerHTML = `
+                <input type="text" placeholder="00/00" value="${data[0]}" oninput="save()">
+                <input type="text" placeholder="---" value="${data[1]}" oninput="save()">
+                <input type="text" placeholder="00:00" value="${data[2]}" oninput="save()">
+                <input type="text" placeholder="00:00" value="${data[3]}" oninput="save()">
+            `;
+            container.appendChild(row);
+        }
+
+        function save() {
+            const rows = Array.from(document.querySelectorAll('.data-row')).map(r => 
+                Array.from(r.querySelectorAll('input')).map(i => i.value)
+            );
+            localStorage.setItem('h_square_data', JSON.stringify(rows));
+        }
+
+        const saved = localStorage.getItem('h_square_data');
+        if (saved) {
+            JSON.parse(saved).forEach(r => addRow(r));
+        } else {
+            for(let i=0; i<12; i++) addRow();
+        }
+    </script>
+</body>
+</html>
