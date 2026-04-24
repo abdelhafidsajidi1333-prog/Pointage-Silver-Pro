@@ -1,148 +1,194 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pointage Hafid Square Pro</title>
+    <title>Pointage Hafid Square Metal</title>
     <style>
         body {
-            background-color: #0b0e14;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', sans-serif;
+            background-color: #101217;
+            color: #d0d5dd;
+            font-family: 'Arial', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 10px;
             margin: 0;
+            height: 100vh; /* يضمن أن الصفحة تأخذ طول الشاشة فقط */
+            justify-content: space-between; /* يوزع العناصر عمودياً */
+            box-sizing: border-box;
+        }
+
+        /* حاوية الجدول: هذا هو السر في جعله مقاداً */
+        .main-container {
+            width: 100%;
+            max-width: 380px;
+            flex: 1; /* يأخذ المساحة المتاحة للجدول */
+            display: flex;
+            flex-direction: column;
         }
 
         .header-box {
-            background: linear-gradient(145deg, #2a2d35, #12141a);
-            padding: 15px;
-            border-radius: 0px; /* مربعات 100% */
-            width: 95%;
-            max-width: 400px;
+            background: linear-gradient(145deg, #20232b, #15181e);
+            padding: 12px 15px;
+            border-radius: 0px;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            border: 1px solid #444;
-            box-shadow: 4px 4px 10px #050505;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+            box-shadow: 4px 4px 10px #080a0e;
+            box-sizing: border-box;
         }
 
         .header-box h2 { 
-            margin: 0; font-size: 1.1rem; 
-            color: #ffffff; text-transform: uppercase;
+            margin: 0; font-size: 1.0rem; letter-spacing: 1px;
+            color: #ffffff; text-transform: uppercase; font-weight: 800;
+        }
+        
+        .header-box h2 span { color: #8e949e; font-weight: 400; }
+
+        .actions { display: flex; gap: 6px; align-items: center; }
+
+        .btn-action {
+            width: 28px; height: 28px; border-radius: 0px; border: none;
+            color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .table-container {
-            width: 95%;
-            max-width: 400px;
+        .btn-plus { background: #2E5BFF; }
+        .btn-minus { background: rgba(255, 77, 77, 0.15); color: #FF4D4D; border: 1px solid #FF4D4D; }
+
+        .btn-pdf { 
+            background: linear-gradient(145deg, #ffffff, #a0a0a0); /* لون فضي معدني */
+            border-radius: 0px; padding: 6px 12px; 
+            border: none; color: #000; font-size: 0.65rem; font-weight: bold; cursor: pointer;
+            box-shadow: 2px 2px 5px #080a0e;
         }
 
         .labels-row {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr 1fr;
-            margin-bottom: 10px;
+            grid-template-columns: 1.3fr 1fr 1fr 1fr;
+            padding: 5px 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 8px;
             text-align: center;
         }
 
-        .label { 
-            font-size: 0.7rem; color: #8e949e; font-weight: bold;
+        .label { font-size: 0.65rem; color: #8e949e; font-weight: bold; text-transform: uppercase; }
+
+        /* منطقة الجدول القابلة للتمرير الداخلي */
+        #tableBody {
+            flex: 1;
+            overflow-y: auto; /* يسمح بالتمرير الداخلي إذا زادت الأسطر عن الشاشة */
+            width: 100%;
         }
 
         .data-row {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr 1fr;
-            gap: 5px; /* فوارق صغيرة بين المربعات */
-            margin-bottom: 8px;
+            grid-template-columns: 1.3fr 1fr 1fr 1fr;
+            gap: 4px; /* مسافة صغيرة */
+            margin-bottom: 5px;
         }
 
-        /* مربعات قاصحة */
         input {
             background: linear-gradient(145deg, #1e2127, #16191e);
             border: 1px solid #333;
-            border-radius: 0px; /* زوايا مربعة */
+            border-radius: 0px;
             color: #ffffff;
-            padding: 12px 2px;
-            font-size: 0.8rem;
+            padding: 10px 2px; /* مسافة رأسية لسهولة الكتابة */
+            font-size: 0.75rem;
             text-align: center;
+            width: 100%;
+            box-sizing: border-box;
             outline: none;
-            box-shadow: inset 2px 2px 5px #0a0c10;
+            box-shadow: inset 1px 1px 3px #0a0c10;
         }
 
-        input:focus {
-            border-color: #ffffff;
-        }
-
-        .btn-pdf { 
-            background: linear-gradient(145deg, #ffffff, #a0a0a0);
-            border-radius: 0px; /* زر مربع */
-            padding: 8px 15px; 
-            border: none; 
-            color: #000; 
-            font-size: 0.7rem; 
-            font-weight: bold; 
-            cursor: pointer;
-        }
+        input:focus { border-color: #ffffff; }
 
         .footer-name {
-            margin-top: 30px; font-size: 0.6rem; color: #444;
-            letter-spacing: 3px; text-align: right; width: 95%;
+            font-size: 0.6rem; color: #444; letter-spacing: 3px; 
+            text-align: right; width: 100%; max-width: 380px;
+            margin-top: 10px;
         }
 
         @media print {
-            .btn-pdf { display: none; }
-            body { background: white; color: black; }
-            input { border: 1px solid #000; background: white; color: black; border-radius: 0px; }
+            .btn-action, .btn-pdf { display: none !important; }
+            body { background: white; color: black; height: auto; padding: 0; }
+            .main-container { max-width: none; }
+            #tableBody { overflow-y: visible; }
+            input { border: 1px solid #000; background: white; color: black; box-shadow: none; }
+            .header-box { border: none; background: white; color: black; box-shadow: none; margin-bottom: 5px;}
+            .header-box h2, .header-box h2 span { color: black; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-box">
-        <h2>POINTAGE <span>HAFID</span></h2>
-        <button class="btn-pdf" onclick="window.print()">PDF REPORT</button>
-    </div>
-
-    <div class="table-container">
-        <div class="labels-row">
-            <div class="label">DATE</div>
-            <div class="label">STATUS</div>
-            <div class="label">IN</div>
-            <div class="label">OUT</div>
+    <div class="main-container">
+        <div class="header-box">
+            <h2>POINTAGE <span>HAFID</span></h2>
+            <div class="actions">
+                <button class="btn-action btn-plus" onclick="addRow()">+</button>
+                <button class="btn-action btn-minus" onclick="removeRow()">−</button>
+                <button class="btn-pdf" onclick="window.print()">PRINT</button>
+            </div>
         </div>
+
+        <div class="labels-row">
+            <div class="label">Date</div>
+            <div class="label">Status</div>
+            <div class="label">Entrée</div>
+            <div class="label">Sortie</div>
+        </div>
+        
         <div id="tableBody"></div>
     </div>
 
     <div class="footer-name">HFID SAJIDI</div>
 
     <script>
+        // دالة إضافة سطر جديد
         function addRow(data = ["", "", "", ""]) {
             const container = document.getElementById('tableBody');
             const row = document.createElement('div');
             row.className = 'data-row';
             row.innerHTML = `
-                <input type="text" placeholder="00/00" value="${data[0]}" oninput="save()">
-                <input type="text" placeholder="---" value="${data[1]}" oninput="save()">
+                <input type="text" placeholder="jj/mm" value="${data[0]}" oninput="save()">
+                <input type="text" placeholder="..." value="${data[1]}" oninput="save()">
                 <input type="text" placeholder="00:00" value="${data[2]}" oninput="save()">
                 <input type="text" placeholder="00:00" value="${data[3]}" oninput="save()">
             `;
             container.appendChild(row);
+            save(); // حفظ البيانات تلقائياً بعد الإضافة
         }
 
+        // دالة مسح آخر سطر
+        function removeRow() {
+            const container = document.getElementById('tableBody');
+            if (container.lastElementChild) {
+                container.removeChild(container.lastElementChild);
+                save();
+            }
+        }
+
+        // دالة حفظ البيانات
         function save() {
             const rows = Array.from(document.querySelectorAll('.data-row')).map(r => 
                 Array.from(r.querySelectorAll('input')).map(i => i.value)
             );
-            localStorage.setItem('h_square_data', JSON.stringify(rows));
+            localStorage.setItem('h_sq_metal_v1', JSON.stringify(rows));
         }
 
-        const saved = localStorage.getItem('h_square_data');
+        // تحميل البيانات المحفوظة
+        const saved = localStorage.getItem('h_sq_metal_v1');
         if (saved) {
             JSON.parse(saved).forEach(r => addRow(r));
         } else {
-            for(let i=0; i<12; i++) addRow();
+            // إضافة 10 أسطر افتراضية في البداية
+            for(let i=0; i<10; i++) addRow();
         }
     </script>
 </body>
